@@ -18,7 +18,6 @@ use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPasspor
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 
 
-
 class KeycloakAuthenticator extends OAuth2Authenticator implements AuthenticationEntrypointInterface
 {
     private $clientRegistry;
@@ -71,9 +70,16 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
                 // 2) do we have a matching user by email?
                 $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
 
-                // 3) Maybe you just want to "register" them by creating
-                // a User object
+                if (!$user) {
+                    // 3) Maybe you just want to "register" them by creating
+                    // a User object
+                    $user = new User();
+                    $user->setEmail($keycloakUser->getEmail());
+                    $user->setRoles(['ROLE_USER']);
+                }
+
                 $user->setKeycloakId($keycloakUser->getId());
+
                 $this->entityManager->persist($user);
                 $this->entityManager->flush();
 
@@ -92,7 +98,7 @@ class KeycloakAuthenticator extends OAuth2Authenticator implements Authenticatio
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         // change "app_homepage" to some route in your app
-        $targetUrl = $this->router->generate('dashboard');
+        $targetUrl = $this->router->generate('app_dashboard');
 
         return new RedirectResponse($targetUrl);
 

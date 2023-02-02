@@ -21,6 +21,9 @@ class User implements UserInterface
     #[ORM\Column]
     private array $roles = [];
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $keycloakId = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -74,5 +77,17 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function getKeycloakId(): ?string
+    {
+        return $this->keycloakId;
+    }
+
+    public function setKeycloakId(?string $keycloakId): self
+    {
+        $this->keycloakId = $keycloakId;
+
+        return $this;
     }
 }

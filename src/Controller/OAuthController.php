@@ -17,7 +17,7 @@ class OAuthController extends AbstractController
     {
         /** @var KeycloakClient $client */
         $client = $clientRegistry->getClient('keycloak');
-        return $client->redirect();
+        return $client->redirect(['openid', 'profile', 'email']);
     }
 
     /**
