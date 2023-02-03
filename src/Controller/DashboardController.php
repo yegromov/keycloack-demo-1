@@ -15,4 +15,12 @@ class DashboardController extends AbstractController
             'controller_name' => 'DashboardController',
         ]);
     }
+
+    #[Route('/', name: 'app_index')]
+    #[Template('dashboard/app_index.html.twig')]
+    public function appIndex()
+    {
+        return $this->render('dashboard/app_index.html.twig', [
+        ]);
+    }
 }

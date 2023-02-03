@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Keycloack Auth Demo Application
+{% endblock %}
+
+{% block body %}
+    <h1>Keycloack Auth Demo Application</h1>
+    <a href="https://localhost:8000/dashboard" class="btn btn-primary btn-lg">Authorize</a><br>
+    <a href="https://localhost:8000/logout" class="btn btn-warning btn-lg">Logout</a><br><br>
+
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <p>Email: {{ app.user.email }}</p>
+    {% endif %}
+
+{% endblock %}
